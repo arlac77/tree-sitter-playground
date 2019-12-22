@@ -2,9 +2,9 @@
     "name": "tree-sitter-playground",
     "version": "0.0.0-semantic-release",
     "module": "parser.mjs",
-    "engines" : { "node": "12.13.0" },
+    "engines" : { "node": "12.14.0" },
     "dependencies": {
-      "tree-sitter": "0.15.14",
-      "tree-sitter-javascript": "0.15.1"
+      "tree-sitter": "0.16.0",
+      "tree-sitter-javascript": "0.16.0"
     }
   }
