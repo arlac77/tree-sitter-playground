@@ -1,4 +1,4 @@
-import path from 'path';
+import { join, extname } from 'path';
 import fs from 'fs';
 import TreeSitter from 'tree-sitter';
 import TreeSitterJavaScript from 'tree-sitter-javascript';
@@ -12,7 +12,7 @@ export function parseFile(filePath) {
           ast = parser.parse(fileContent),
           cursor = ast.walk(),
           moduleEntry = {'identifier': filePath, 'classes': {}};
-    // console.log(ast.rootNode.toString());
+    //console.log(ast.rootNode.toString());
     function nodeContent(node) {
         return fileContent.substring(node.startIndex, node.endIndex);
     }
@@ -99,13 +99,15 @@ export function parseFile(filePath) {
     return moduleEntry;
 }
 
+const jsExts = new Set(['.js','.mjs','.cjs']);
+
 export function exploreDirectory(directoryPath, moduleMap={}) {
     const directory = fs.readdirSync(directoryPath);
     for(const fileName of directory) {
-        const filePath = directoryPath+fileName;
+        const filePath = join(directoryPath,fileName);
         if(fs.lstatSync(filePath).isDirectory())
-            exploreDirectory(filePath+'/', moduleMap);
-        else if(path.extname(filePath) === '.js')
+            exploreDirectory(filePath, moduleMap);
+        else if(jsExts.has(extname(filePath)))
             try {
                 moduleMap[filePath] = parseFile(filePath);
             } catch(error) {
@@ -114,3 +116,8 @@ export function exploreDirectory(directoryPath, moduleMap={}) {
     }
     return moduleMap;
 }
+
+const modules = {};
+exploreDirectory('.', modules);
+
+console.log(modules);
