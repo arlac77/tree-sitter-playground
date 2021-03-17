@@ -3,7 +3,7 @@
   "version": "0.0.0-semantic-release",
   "module": "parser.mjs",
   "engines": {
-    "node": "14.15.5"
+    "node": "14.16.0"
   },
   "dependencies": {
     "tree-sitter": "0.18.1",
